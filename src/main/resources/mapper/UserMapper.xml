@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ord.tutorial.dao.UserDao">
+    <!-- SQL fragment cho điều kiện filter -->
+    <sql id="filterConditions">
+        <where>
+            <if test="isActive != null">
+                AND is_enabled = #{isActive}
+            </if>
+
+            <if test="fts != null and fts.trim() != ''">
+                AND (
+                username LIKE CONCAT('%', #{fts}, '%')
+                OR email LIKE CONCAT('%', #{fts}, '%')
+                )
+            </if>
+            <if test="createdDate != null">
+                <if test="createdDate.fromDate != null">
+                    AND created_date >= #{createdDate.fromDate}
+                </if>
+
+                <if test="createdDate.toDate != null">
+                    <![CDATA[
+                AND created_date <= #{createdDate.toDate}
+                ]]>
+                </if>
+            </if>
+
+        </where>
+    </sql>
+    <select id="findById" resultType="com.ord.tutorial.entity.User">
+        select *
+        from users
+        where id = #{id}
+    </select>
+    <select id="getPageCount" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM users
+        <include refid="filterConditions"/>
+    </select>
+    <select id="getPageItems" resultType="com.ord.tutorial.dto.user.UserDto">
+        SELECT
+        id,
+        username,
+        full_name name,
+        email,
+        is_enabled as isActive,
+        created_date as createdDate,
+        role
+        FROM users
+        <include refid="filterConditions"/>
+        ORDER BY created_date DESC
+        LIMIT #{skipCount}, #{maxResultCount}
+    </select>
+</mapper>

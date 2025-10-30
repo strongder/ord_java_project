@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ord.tutorial.dao.WardDao">
+    <!-- SQL fragment cho điều kiện filter -->
+    <sql id="filterConditions">
+        <where>
+            <if test="provinceCode != null and provinceCode.trim() != ''">
+                AND w.province_code = #{provinceCode}
+            </if>
+            <if test="provinceName != null and provinceName.trim() != ''">
+                AND p.name LIKE CONCAT('%', #{provinceName}, '%')
+            </if>
+            <if test="filter != null and filter.trim() != ''">
+                AND (
+                w.code LIKE CONCAT('%', #{filter}, '%')
+                OR w.name LIKE CONCAT('%', #{filter}, '%')
+                )
+            </if>
+        </where>
+    </sql>
+
+    <select id="getPageCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM wards w join provinces p on w.province_code = p.code
+        <include refid="filterConditions"/>
+    </select>
+    <select id="getPageItems" resultType="com.ord.tutorial.dto.ward.WardDto">
+        SELECT
+        w.id, w.code, w.name, p.code AS provinceCode, p.name AS provinceName
+        FROM wards w join provinces p on w.province_code = p.code
+        <include refid="filterConditions"/>
+        ORDER BY #{sorting} ASC
+        LIMIT #{skipCount}, #{maxResultCount}
+    </select>
+</mapper>

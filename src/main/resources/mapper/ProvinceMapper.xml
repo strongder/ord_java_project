@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ord.tutorial.dao.ProvinceDao">
+    <!-- SQL fragment cho điều kiện filter -->
+    <sql id="filterConditions">
+        <where>
+            <if test="fts != null and fts.trim() != ''">
+                AND (
+                code LIKE CONCAT('%', #{fts}, '%')
+                OR name LIKE CONCAT('%', #{fts}, '%')
+                )
+            </if>
+        </where>
+    </sql>
+
+    <select id="getPageCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM provinces
+        <include refid="filterConditions"/>
+    </select>
+    <select id="getPageItems" resultType="com.ord.tutorial.dto.province.ProvinceDto">
+        SELECT
+        id,
+        code,
+        name
+        FROM provinces
+        <include refid="filterConditions"/>
+        ORDER BY code ASC
+        LIMIT #{skipCount}, #{maxResultCount}
+    </select>
+</mapper>
