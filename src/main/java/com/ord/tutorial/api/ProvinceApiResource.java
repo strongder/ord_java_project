@@ -3,6 +3,7 @@ package com.ord.tutorial.api;
 import com.ord.core.crud.dto.CommonResultDto;
 import com.ord.core.crud.dto.PagedResultRequestDto;
 import com.ord.core.crud.repository.OrdEntityRepository;
+import com.ord.core.crud.repository.spec.SpecificationBuilder;
 import com.ord.core.crud.service.SimpleCrudAppService;
 import com.ord.tutorial.dao.ProvinceDao;
 import com.ord.tutorial.dto.province.ProvinceCreateDto;
@@ -15,6 +16,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -71,6 +73,13 @@ public class ProvinceApiResource extends SimpleCrudAppService<
         return provinceDao.getPageCount(pagedResultRequestDto);
     }
 
+
+    @Override
+    protected Specification<ProvinceEntity> buildSpecificationForPaging(PagedResultRequestDto input) {
+        return SpecificationBuilder.<ProvinceEntity>builder()
+                .withLikeFts(input.getFts(), "code", "name")
+                .build();
+    }
     @Override
     protected List<ProvinceDto> fetchPagedItems(PagedResultRequestDto pagedResultRequestDto) {
         return provinceDao.getPageItems(pagedResultRequestDto);

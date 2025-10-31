@@ -31,7 +31,7 @@
         w.id, w.code, w.name, p.code AS provinceCode, p.name AS provinceName
         FROM wards w join provinces p on w.province_code = p.code
         <include refid="filterConditions"/>
-        ORDER BY #{sorting} ASC
+        ORDER BY code ASC
         LIMIT #{skipCount}, #{maxResultCount}
     </select>
 </mapper>

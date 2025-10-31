@@ -3,11 +3,13 @@ package com.ord.core.logging.audit_log;
 import lombok.Builder;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.Instant;
 
 @Data
 @Builder
-public class AuditLogDto {
+public class AuditLogDto implements Serializable {
+    private String traceId;
     private String method;
     private String uri;
     private String clientIp;
