@@ -6,7 +6,9 @@ public enum CommonResultCode {
     UNAUTHORIZED("401"),
     FORBIDDEN("403"),
     NOT_FOUND("404"),
-    ERR_SERVER("500");
+    ERR_SERVER("500"),
+    METHOD_NOT_ALLOWED("405"),
+    ENDPOINT_NOT_FOUND("406");
     private final String text;
 
     CommonResultCode(final String text) {

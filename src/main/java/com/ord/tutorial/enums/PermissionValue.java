@@ -10,7 +10,14 @@ public enum PermissionValue
     WARD_CREATE("ward.create"),
     WARD_GET_PAGED("ward.get-paged"),
     WARD_UPDATE("ward.update"),
-    WARD_DELETE("ward.delete");
+    WARD_DELETE("ward.delete"),
+
+//    user
+    USER_CREATE("user.create"),
+    USER_GET_PAGED("user.get-paged"),
+    USER_UPDATE("user.update"),
+    USER_DELETE("user.delete"),
+    USER_UPDATE_SELF("user.update-self");
 
     private final String value;
     PermissionValue(String value) {

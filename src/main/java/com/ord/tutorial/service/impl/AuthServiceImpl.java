@@ -4,7 +4,12 @@ import com.ord.core.exception.OrdBusinessException;
 import com.ord.core.security.jwt.JwtClaimNames;
 import com.ord.core.security.jwt.JwtService;
 import com.ord.core.util.StringUtils;
+import com.ord.tutorial.dto.auth.RegisterDto;
+import com.ord.tutorial.entity.RoleEntity;
+import com.ord.tutorial.entity.User;
+import com.ord.tutorial.enums.Role;
 import com.ord.tutorial.repository.RolePermissionRepository;
+import com.ord.tutorial.repository.RoleRepository;
 import com.ord.tutorial.repository.UserRepository;
 import com.ord.tutorial.repository.UserRoleRepository;
 import com.ord.tutorial.service.AuthService;
@@ -12,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +32,8 @@ public class AuthServiceImpl implements AuthService {
     private final JwtService jwtService;
     private final UserRoleRepository userRoleRepository;
     private final RolePermissionRepository rolePermissionRepository;
+    private final RoleRepository roleRepository;
+    private final RoleServiceImpl roleService;
 
     public String login(String username, String password) {
         var user = userRepository.findByUsername(username).orElse(null);
@@ -39,7 +47,7 @@ public class AuthServiceImpl implements AuthService {
         if (!user.getEnabled()) {
             throw new OrdBusinessException("auth.inactive");
         }
-        List<Long> roleIds = userRoleRepository.findRoleIdsByUserId(user.getId());
+        List<Integer> roleIds = userRoleRepository.findRoleIdsByUserId(user.getId());
         List<String> permissions = rolePermissionRepository.findByRoleIds(roleIds);
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put(JwtClaimNames.USER_ID, user.getId());
@@ -48,6 +56,22 @@ public class AuthServiceImpl implements AuthService {
             extraClaims.put(JwtClaimNames.EMAIL, user.getEmail());
         }
         return jwtService.generateToken(extraClaims, user);
+    }
+
+    @Override
+    @Transactional
+    public void register(RegisterDto dto) {
+        if (userRepository.existsByUsername(dto.getUsername())) {
+            throw new OrdBusinessException("username.exists");
+        }
+        var user = new com.ord.tutorial.entity.User();
+        user.setUsername(dto.getUsername());
+        user.setEmail(dto.getEmail());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        user.setEnabled(Boolean.TRUE);
+        User newUser = userRepository.save(user);
+        Integer roleId = roleRepository.findIdByName(Role.USER.name());
+        roleService.assignRoleToUser(newUser.getId(), roleId);
     }
 
     private void throwUserInvalid() {

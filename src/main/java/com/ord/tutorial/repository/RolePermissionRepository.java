@@ -9,5 +9,7 @@ import java.util.List;
 public interface RolePermissionRepository extends OrdEntityRepository<RolePermissionEntity, Long> {
 
     @Query("SELECT rp.permissionName FROM RolePermissionEntity rp WHERE rp.roleId IN :roleIds")
-    List<String> findByRoleIds(List<Long> roleIds);
+    List<String> findByRoleIds(List<Integer> roleIds);
+
+    void deleteByRoleId(Integer roleId);
 }

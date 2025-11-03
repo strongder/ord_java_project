@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface RoleRepository extends OrdEntityRepository<RoleEntity, Integer> {
     @Query("SELECT r.id FROM RoleEntity r WHERE r.roleName = :role")
-    Integer findIdByName(Role role);
+    Integer findIdByName(String role);
 }

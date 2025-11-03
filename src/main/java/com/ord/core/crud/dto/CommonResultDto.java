@@ -63,6 +63,13 @@ public class CommonResultDto<TResult> implements Serializable {
                 .build();
     }
 
+    public static <T> CommonResultDto<T> success(String message) {
+        return CommonResultDto.<T>builder()
+                .code(CommonResultCode.SUCCESS.toString())
+                .message(i18nService.getMessage(message))
+                .build();
+    }
+
     public static <T> CommonResultDto<T> fail(String message) {
         return CommonResultDto.<T>builder()
                 .code(CommonResultCode.ERR_SERVER.toString())

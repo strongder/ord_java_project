@@ -40,10 +40,10 @@ public class DataSeeding implements CommandLineRunner {
     @Transactional
     public void seedDataRole() {
         roleRepository.saveAll(List.of(
-                        new RoleEntity(null, Role.ADMIN),
-                        new RoleEntity(null, Role.USER),
-                        new RoleEntity(null, Role.SA),
-                        new RoleEntity(null, Role.ANONYMOUS)
+                        new RoleEntity(null, Role.ADMIN.name()),
+                        new RoleEntity(null, Role.USER.name()),
+                        new RoleEntity(null, Role.SA.name()),
+                        new RoleEntity(null, Role.ANONYMOUS.name())
                 )
         );
     }
@@ -58,7 +58,7 @@ public class DataSeeding implements CommandLineRunner {
         adminUser.setEnabled(true);
         adminUser =  userRepository.saveAndFlush(adminUser);
 
-        Integer roleId = roleRepository.findIdByName(Role.ADMIN);
+        Integer roleId = roleRepository.findIdByName(Role.ADMIN.name());
         userRoleRepository.save(new UserRoleEntity(null,  adminUser.getId(), roleId) );
     }
 

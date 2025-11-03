@@ -9,6 +9,7 @@ import com.ord.tutorial.dto.user.UserDto;
 import com.ord.tutorial.dto.user.UserPageRequest;
 import com.ord.tutorial.dto.user.UserUpdateDto;
 import com.ord.tutorial.entity.User;
+import com.ord.tutorial.enums.PermissionValue;
 import com.ord.tutorial.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
@@ -60,6 +61,26 @@ public class UserApiResource extends CrudAppService<
     }
 
     @Override
+    protected String getGetPagedListPolicy() {
+        return PermissionValue.USER_GET_PAGED.getValue();
+    }
+
+    @Override
+    protected String getCreatePolicy() {
+        return PermissionValue.USER_CREATE.getValue();
+    }
+
+    @Override
+    protected String getUpdatePolicy() {
+        return super.getUpdatePolicy();
+    }
+
+    @Override
+    protected String getRemovePolicy() {
+        return PermissionValue.USER_DELETE.getValue();
+    }
+
+    @Override
     protected void validationBeforeUpdate(UserUpdateDto userDto, User entityToUpdate) {
         if (userRepository.existsByEmailAndIdNot(userDto.getEmail(), entityToUpdate.getId())) {
             throwBusiness("email.exists");
@@ -85,6 +106,5 @@ public class UserApiResource extends CrudAppService<
     protected String getEntityName() {
         return "user";
     }
-
 
 }

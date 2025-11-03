@@ -9,5 +9,5 @@ import java.util.List;
 public interface UserRoleRepository extends OrdEntityRepository<UserRoleEntity, Long> {
 
     @Query("SELECT ur.roleId FROM UserRoleEntity ur WHERE ur.userId = :id")
-    List<Long> findRoleIdsByUserId(Long id);
+    List<Integer> findRoleIdsByUserId(Long id);
 }

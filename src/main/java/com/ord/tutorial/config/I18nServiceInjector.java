@@ -1,6 +1,7 @@
-package com.ord.core.crud.service;
+package com.ord.tutorial.config;
 
 import com.ord.core.crud.dto.CommonResultDto;
+import com.ord.core.crud.service.I18nService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

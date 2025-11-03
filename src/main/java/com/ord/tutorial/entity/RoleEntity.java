@@ -1,7 +1,6 @@
 package com.ord.tutorial.entity;
 
 import com.ord.core.crud.entity.BaseEntity;
-import com.ord.tutorial.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,6 +17,5 @@ public class RoleEntity implements BaseEntity<Integer> {
     private Integer id;
 
     @Column(name = "role_name", nullable = false, unique = true)
-    @Enumerated(EnumType.STRING)
-    private Role roleName;
+    private String roleName;
 }

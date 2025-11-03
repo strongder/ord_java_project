@@ -43,13 +43,14 @@ public class ProvinceApiResource extends SimpleCrudAppService<
 
     @GetMapping("/dropdown")
     @Cacheable(value = "provinces_dropdown", key = "'all'")
-    public List<ProvinceDto> getAllProvinces() {
+    public CommonResultDto<List<ProvinceDto>> getAllProvinces() {
         checkGetPagedListPolicy();
         var provinces  = provinceRepository.findAll();
         // map thẳng ra ArrayList, không dùng TypeToken
-        return provinces.stream()
+        var result =  provinces.stream()
                 .map(entity -> objectMapper.map(entity, ProvinceDto.class))
-                .collect(Collectors.toList());
+                .toList();
+        return CommonResultDto.success(result);
     }
 
     @CacheEvict(value = "provinces_dropdown", allEntries = true)

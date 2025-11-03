@@ -21,9 +21,6 @@ WORKDIR /app
 # Copy file jar từ stage build
 COPY --from=builder /app/target/*.jar app.jar
 
-# Expose port (ví dụ 8080)
-EXPOSE 8080
-
 # Biến môi trường (tùy chọn)
 ENV JAVA_OPTS="-Xms256m -Xmx512m"
 
