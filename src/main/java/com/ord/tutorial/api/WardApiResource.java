@@ -9,6 +9,7 @@ import com.ord.tutorial.dto.province.ProvinceDto;
 import com.ord.tutorial.dto.ward.WardDto;
 import com.ord.tutorial.dto.ward.WardPagedInput;
 import com.ord.tutorial.entity.WardEntity;
+import com.ord.tutorial.enums.PermissionValue;
 import com.ord.tutorial.repository.ProvinceRepository;
 import com.ord.tutorial.repository.WardRepository;
 import com.ord.core.crud.repository.spec.SpecificationBuilder;
@@ -45,7 +46,6 @@ public class WardApiResource extends SimpleCrudAppService<
 //                .build();
 //    }
 
-
     @Override
     protected List<WardDto> fetchPagedItems(WardPagedInput wardPagedInput) {
         return wardDao.getPageItems(wardPagedInput);
@@ -60,7 +60,7 @@ public class WardApiResource extends SimpleCrudAppService<
     protected void validationBeforeCreate(WardDto wardDto) {
         checkProvinceCode(wardDto.getProvinceCode());
         if (wardRepository.existsByCode(wardDto.getCode())) {
-            throwBusiness("Mã xã đã tồn tại");
+            throwBusiness("ward-code.exists");
         }
         super.validationBeforeCreate(wardDto);
     }
@@ -69,15 +69,36 @@ public class WardApiResource extends SimpleCrudAppService<
     protected void validationBeforeUpdate(WardDto wardDto, WardEntity entityToUpdate) {
         checkProvinceCode(wardDto.getProvinceCode());
         if (wardRepository.existsByCodeAndIdNot(wardDto.getCode(), entityToUpdate.getId())) {
-            throwBusiness("Mã xã đã tồn tại trong hệ thống");
+            throwBusiness("ward-code.exists");
         }
         super.validationBeforeUpdate(wardDto, entityToUpdate);
     }
 
     private void checkProvinceCode(String provinceCode) {
         if (!provinceRepository.existsByCode(provinceCode)) {
-            throwBusiness("Mã tỉnh không tồn tại");
+            throwBusiness("province-code.not-exists");
         }
+    }
+
+    @Override
+    protected String getCreatePolicy() {
+        return super.getCreatePolicy();
+    }
+
+    @Override
+    protected String getGetPagedListPolicy() {
+        return PermissionValue.WARD_GET_PAGED.getValue();
+    }
+
+
+    @Override
+    protected String getRemovePolicy() {
+        return PermissionValue.WARD_DELETE.getValue();
+    }
+
+    @Override
+    protected String getUpdatePolicy() {
+        return PermissionValue.WARD_UPDATE.getValue();
     }
 
     @Override

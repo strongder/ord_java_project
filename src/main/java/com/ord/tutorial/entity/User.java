@@ -43,12 +43,9 @@ public class User extends AuditTableEntity implements UserDetails, BaseEntity<Lo
     @Column(name = "is_enabled")
     private Boolean enabled = true;
 
-    @Transient
-    private List<GrantedAuthority> authorities;
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-       return List.of();
+        return List.of();
     }
 
     @Override

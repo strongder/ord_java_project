@@ -277,7 +277,7 @@ public abstract class CrudAppService<
 
         return CommonResultDto.success(
                 convertCreatedEntityToDto(newEntity, createInput),
-                "CreateSuccessfully"
+                "create.success"
         );
     }
 
@@ -326,7 +326,7 @@ public abstract class CrudAppService<
 
         return CommonResultDto.success(
                 convertUpdatedEntityToDto(entityToUpdate, updateInput),
-                "UpdateSuccessfully"
+                "update.success"
         );
     }
 
@@ -360,7 +360,7 @@ public abstract class CrudAppService<
 
         return CommonResultDto.success(
                 convertRemovedEntityToDto(entityToRemove),
-                "RemoveSuccessfully"
+                "remove.success"
         );
     }
 
@@ -463,14 +463,15 @@ public abstract class CrudAppService<
 
     protected void hasRole(String role) {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("Context Authorities = " + authentication.getAuthorities());
         if (authentication == null || !authentication.isAuthenticated()) {
-            throw new AccessDeniedException("Người dùng không có quyền truy cập ");
+            throw new AccessDeniedException("access.denied");
         }
         boolean hasRole = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .anyMatch(r -> r.equalsIgnoreCase(role));
         if (!hasRole) {
-            throw new AccessDeniedException("Người dùng không có quyền truy cập ");
+            throw new AccessDeniedException("access.denied");
         }
     }
     // ==================== Mapping Methods ====================

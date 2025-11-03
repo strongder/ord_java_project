@@ -27,7 +27,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
         CommonResultDto<?> result = CommonResultDto.fail(CommonResultCode.UNAUTHORIZED,
-                "Bạn chưa đăng nhập");
+                "unauthenticated");
         response.getWriter().write(objectMapper.writeValueAsString(result));
     }
 }

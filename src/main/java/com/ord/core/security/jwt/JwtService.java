@@ -13,6 +13,7 @@ import javax.crypto.SecretKey;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -27,6 +28,11 @@ public class JwtService {
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
+
+    public List<String> extractPermissions(String token) {
+        return extractClaim(token, claims -> claims.get(JwtClaimNames.PERMISSION, List.class));
+    }
+
 
     public Long extractUserId(String token) {
         return extractClaim(token, claims -> claims.get(JwtClaimNames.USER_ID, Long.class));

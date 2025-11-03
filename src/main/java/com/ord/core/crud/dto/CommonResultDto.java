@@ -3,11 +3,10 @@ package com.ord.core.crud.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.ord.core.crud.enums.CommonResultCode;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.ord.core.crud.service.I18nService;
+import lombok.*;
 import lombok.experimental.Accessors;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -29,6 +28,9 @@ public class CommonResultDto<TResult> implements Serializable {
     private String message;
     private Map<String, Object> additionalProperties;
 
+    @Setter
+    private static I18nService i18nService;
+
     @JsonIgnore
     public CommonResultDto<TResult> addAdditionalProperty(String key, Object value) {
         if (this.additionalProperties == null) {
@@ -44,17 +46,11 @@ public class CommonResultDto<TResult> implements Serializable {
 
     // ---------- Static helper methods ----------
 
-    public static <T> CommonResultDto<T> success() {
-        return CommonResultDto.<T>builder()
-                .code(CommonResultCode.SUCCESS.toString())
-                .message("Success")
-                .build();
-    }
 
     public static <T> CommonResultDto<T> success(T data) {
         return CommonResultDto.<T>builder()
                 .code(CommonResultCode.SUCCESS.toString())
-                .message("Success")
+                .message(i18nService.getMessage("success.operation"))
                 .data(data)
                 .build();
     }
@@ -62,7 +58,7 @@ public class CommonResultDto<TResult> implements Serializable {
     public static <T> CommonResultDto<T> success(T data, String message) {
         return CommonResultDto.<T>builder()
                 .code(CommonResultCode.SUCCESS.toString())
-                .message(message)
+                .message(i18nService.getMessage(message))
                 .data(data)
                 .build();
     }
@@ -70,25 +66,25 @@ public class CommonResultDto<TResult> implements Serializable {
     public static <T> CommonResultDto<T> fail(String message) {
         return CommonResultDto.<T>builder()
                 .code(CommonResultCode.ERR_SERVER.toString())
-                .message(message)
+                .message(i18nService.getMessage(message))
                 .build();
     }
 
     public static <T> CommonResultDto<T> fail(Exception ex) {
         return CommonResultDto.<T>builder()
                 .code(CommonResultCode.ERR_SERVER.toString())
-                .message("Có lỗi trong quá trình xử lý")
+                .message("error.processing")
                 .build();
     }
 
     public static <T> CommonResultDto<T> fail(String code, String message) {
         return CommonResultDto.<T>builder()
                 .code(code)
-                .message(message)
+                .message(i18nService.getMessage(message))
                 .build();
     }
 
     public static <T> CommonResultDto<T> fail(CommonResultCode resultCode, String message) {
-        return fail(resultCode.toString(), message);
+        return fail(resultCode.toString(), i18nService.getMessage(message));
     }
 }

@@ -17,27 +17,12 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
-    private final UserRepository userRepository;
-    private final UserRoleRepository userRoleRepository;
-    private final RolePermissionRepository rolePermissionRepository;
+    private final UserRepository userRepository;;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        var userDetail = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
-        // Lấy roleId từ user_roles
-        List<Long> roleIds = userRoleRepository.findRoleIdsByUserId(userDetail.getId());
-
-        // Lấy permission từ role_permissions
-        List<String> permissions = rolePermissionRepository.findByRoleIds(roleIds);
-
-        List<GrantedAuthority> authorities = permissions.stream()
-                .map(permission -> (GrantedAuthority) () -> permission)
-                .toList();
-
-        userDetail.setAuthorities(authorities);
         // Trả về user với authorities
-        return  userDetail;
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("user.notfound"));
     }
 }

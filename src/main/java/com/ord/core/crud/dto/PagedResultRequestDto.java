@@ -60,5 +60,4 @@ public class PagedResultRequestDto implements Serializable {
         }
         return StringUtils.removeVietnameseAccents(filter).trim().toLowerCase();
     }
-
 }

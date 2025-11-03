@@ -27,7 +27,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 
         CommonResultDto<?> result = CommonResultDto.fail(CommonResultCode.UNAUTHORIZED,
-                "Bạn không có quyền truy cập tài nguyên này");
+                "forbidden");
 
         response.getWriter().write(objectMapper.writeValueAsString(result));
     }

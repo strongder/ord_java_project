@@ -9,6 +9,7 @@ import com.ord.tutorial.dao.ProvinceDao;
 import com.ord.tutorial.dto.province.ProvinceCreateDto;
 import com.ord.tutorial.dto.province.ProvinceDto;
 import com.ord.tutorial.entity.ProvinceEntity;
+import com.ord.tutorial.enums.PermissionValue;
 import com.ord.tutorial.repository.ProvinceRepository;
 import com.ord.tutorial.repository.WardRepository;
 import jakarta.annotation.PostConstruct;
@@ -43,6 +44,7 @@ public class ProvinceApiResource extends SimpleCrudAppService<
     @GetMapping("/dropdown")
     @Cacheable(value = "provinces_dropdown", key = "'all'")
     public List<ProvinceDto> getAllProvinces() {
+        checkGetPagedListPolicy();
         var provinces  = provinceRepository.findAll();
         // map thẳng ra ArrayList, không dùng TypeToken
         return provinces.stream()
@@ -88,21 +90,21 @@ public class ProvinceApiResource extends SimpleCrudAppService<
     @Override
     protected void validationBeforeCreate(ProvinceCreateDto provinceDto) {
         if (provinceRepository.existsByCode(provinceDto.getCode())) {
-            throwBusiness("Mã tỉnh đã tồn tại");
+            throwBusiness("province-code.exists");
         }
     }
 
     @Override
     protected void validationBeforeUpdate(ProvinceDto provinceDto, ProvinceEntity entityToUpdate) {
         if (provinceRepository.existsByCodeAndIdNot(provinceDto.getCode(), entityToUpdate.getId())) {
-            throwBusiness("Mã tỉnh đã tồn tại trong hệ thống");
+            throwBusiness("province-code.exists");
         }
     }
 
     @Override
     protected void validationBeforeRemove(ProvinceEntity entityToRemove) {
         if (wardRepository.existsByProvinceCode(entityToRemove.getCode())) {
-            throwBusiness("Tỉnh đã được sử dụng, không thể xóa");
+            throwBusiness("province.in-use");
         }
     }
 
@@ -111,6 +113,25 @@ public class ProvinceApiResource extends SimpleCrudAppService<
         return provinceRepository;
     }
 
+    @Override
+    protected String getCreatePolicy() {
+        return PermissionValue.PROVINCE_CREATE.getValue();
+    }
+
+    @Override
+    protected String getGetPagedListPolicy() {
+        return PermissionValue.PROVINCE_GET_PAGED.getValue();
+    }
+
+    @Override
+    protected String getUpdatePolicy() {
+        return PermissionValue.PROVINCE_UPDATE.getValue();
+    }
+
+    @Override
+    protected String getRemovePolicy() {
+        return PermissionValue.PROVINCE_DELETE.getValue();
+    }
 
     @Override
     protected String getEntityName() {
