@@ -71,7 +71,7 @@ public class AuthServiceImpl implements AuthService {
         user.setEnabled(Boolean.TRUE);
         User newUser = userRepository.save(user);
         Integer roleId = roleRepository.findIdByName(Role.USER.name());
-        roleService.assignRoleToUser(newUser.getId(), roleId);
+        roleService.assignRoleToUser(newUser.getId(), List.of(roleId));
     }
 
     private void throwUserInvalid() {

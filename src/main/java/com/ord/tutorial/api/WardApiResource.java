@@ -38,14 +38,6 @@ public class WardApiResource extends SimpleCrudAppService<
         return wardRepository;
     }
 
-//    @Override
-//    protected Specification<WardEntity> buildSpecificationForPaging(WardPagedInput input) {
-//        return SpecificationBuilder.<WardEntity>builder()
-//                .withEqIfNotNull("provinceCode", input.getProvinceCode())
-//                .withLikeFts(input.getFts(), "code", "name")
-//                .build();
-//    }
-
     @Override
     protected List<WardDto> fetchPagedItems(WardPagedInput wardPagedInput) {
         return wardDao.getPageItems(wardPagedInput);
@@ -82,7 +74,7 @@ public class WardApiResource extends SimpleCrudAppService<
 
     @Override
     protected String getCreatePolicy() {
-        return super.getCreatePolicy();
+        return PermissionValue.WARD_CREATE.getValue();
     }
 
     @Override

@@ -10,4 +10,6 @@ public interface UserRoleRepository extends OrdEntityRepository<UserRoleEntity, 
 
     @Query("SELECT ur.roleId FROM UserRoleEntity ur WHERE ur.userId = :id")
     List<Integer> findRoleIdsByUserId(Long id);
+
+    void deleteByUserId(Long userId);
 }

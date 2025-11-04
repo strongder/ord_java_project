@@ -1,19 +1,22 @@
 package com.ord.tutorial.api;
 
+import com.ord.core.crud.dto.CommonResultDto;
 import com.ord.core.crud.repository.OrdEntityRepository;
 import com.ord.core.crud.repository.spec.SpecificationBuilder;
 import com.ord.core.crud.service.CrudAppService;
 import com.ord.core.util.StringUtils;
-import com.ord.tutorial.dto.user.UserCreateDto;
-import com.ord.tutorial.dto.user.UserDto;
-import com.ord.tutorial.dto.user.UserPageRequest;
-import com.ord.tutorial.dto.user.UserUpdateDto;
+import com.ord.tutorial.dto.user.*;
 import com.ord.tutorial.entity.User;
 import com.ord.tutorial.enums.PermissionValue;
 import com.ord.tutorial.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.apache.kafka.common.security.auth.AuthenticationContext;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -72,7 +75,7 @@ public class UserApiResource extends CrudAppService<
 
     @Override
     protected String getUpdatePolicy() {
-        return super.getUpdatePolicy();
+        return PermissionValue.USER_UPDATE.getValue();
     }
 
     @Override
@@ -95,6 +98,27 @@ public class UserApiResource extends CrudAppService<
             userUpdateDto.setPassword(entityToUpdate.getPassword());
         }
         super.applyUpdateToEntity(userUpdateDto, entityToUpdate);
+    }
+
+    protected void checkUpdateSelf() {
+        hasRole(PermissionValue.USER_UPDATE_SELF.getValue());
+    }
+
+//    @PostMapping(path = "/update-profile")
+//    public CommonResultDto<UserDto> updateProfile(UserUpdateDto input) {
+//        checkUpdateSelf();
+//
+//    }
+
+    @GetMapping(path = "/me")
+    public CommonResultDto<UserDetailDto> getCurrentUser() {
+        var username = SecurityContextHolder.getContext().getAuthentication().getName();
+        var user = userRepository.findByUsername(username);
+        if (user.isEmpty()) {
+            throwBusiness("user.not-found");
+        }
+        UserDetailDto userDto = objectMapper.map(user.get(), UserDetailDto.class);
+        return CommonResultDto.success(userDto);
     }
 
     @Override

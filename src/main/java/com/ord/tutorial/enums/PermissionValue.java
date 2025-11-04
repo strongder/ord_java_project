@@ -1,6 +1,9 @@
 package com.ord.tutorial.enums;
 
-public enum PermissionValue
+import lombok.Getter;
+
+@Getter
+public enum PermissionValue//0
 {
     PROVINCE_CREATE("province.create"),
     PROVINCE_GET_PAGED("province.get-paged"),
@@ -22,8 +25,5 @@ public enum PermissionValue
     private final String value;
     PermissionValue(String value) {
         this.value = value;
-    }
-    public String getValue() {
-        return value;
     }
 }

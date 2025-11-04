@@ -19,7 +19,6 @@ public class UserDto extends EncodedIdDto<Long> {
     private String name;
     private String email;
     private String phone;
-    private Boolean isActive;
+    private Boolean enabled;
     private LocalDateTime createdDate;
-    private Role role;
 }

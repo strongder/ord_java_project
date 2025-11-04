@@ -42,14 +42,17 @@ public class RoleServiceImpl  implements
             );
         }
     }
-    public void assignRoleToUser(Long userId, Integer roleId) {
-        userRoleRepository.save(
-                new UserRoleEntity(
-                        null,
-                        userId,
-                        roleId
-                )
-        );
+    public void assignRoleToUser(Long userId, List<Integer> roleId) {
+        userRoleRepository.deleteByUserId(userId);
+        for (Integer rId : roleId) {
+            userRoleRepository.save(
+                    new UserRoleEntity(
+                            null,
+                            userId,
+                            rId
+                    )
+            );
+        }
     }
 
     @Override

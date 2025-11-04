@@ -14,4 +14,4 @@
     + lastModifiedDate    
 5. Tạo api get data cho dropdown list - (Sử dụng cache). Có cơ chế xóa cache khi insert/update/remove
 6. Bổ sung thêm AuditLogFilter để ghi lại thông tin AuditLogDto trong (src\main\java\com\ord\core\logging\audit_log) cho mỗi request theo luồng
-App -> Kafka -> logstash -> elastic
+App -> Kafka -> logstash -> elastic                  
