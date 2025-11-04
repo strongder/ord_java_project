@@ -9,8 +9,12 @@ public interface RoleService {
     void assignPermissionsToRole(AssignPermissionDto dto);
     List<String> getRolePermissions(Integer roleId);
     List<RoleDto> getAllRoles();
+    void assignRoleToUser(Long userId, List<Integer> roleId);
+
+    List<Integer> getRoleIdsByUserId(Long userId);
 
     List<String> getPermissionByUserId(Long id);
+
 
     List<String> getRoleNameByUserId(Long id);
 }

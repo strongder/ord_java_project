@@ -1,5 +1,6 @@
-package com.ord.tutorial.dto.user;
+package com.ord.tutorial.dto.admin_user;
 
+import com.ord.tutorial.dto.user.UserDtoBase;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class UserCreateDto extends UserDtoBase {
+public class AdminUserCreateDto extends UserDtoBase {
     @NotBlank(message = "Username không được để trống")
     @Size(min = 3, max = 50, message = "Username phải từ 3 đến 50 ký tự")
     @Pattern(

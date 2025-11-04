@@ -1,5 +1,6 @@
-package com.ord.tutorial.dto.user;
+package com.ord.tutorial.dto.admin_user;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.ord.tutorial.dto.user.UserDto;
 import lombok.Data;
 
 import java.util.List;

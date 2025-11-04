@@ -12,7 +12,6 @@ import com.ord.tutorial.repository.UserRoleRepository;
 import com.ord.tutorial.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,6 +78,11 @@ public class RoleServiceImpl  implements
     }
     public List<String> getRoleNameByUserId(Long userId) {
         return roleRepository.findRoleNamesByUserId(userId);
+    }
+
+    @Override
+    public List<Integer> getRoleIdsByUserId(Long userId) {
+        return userRoleRepository.findRoleIdsByUserId(userId);
     }
 
 

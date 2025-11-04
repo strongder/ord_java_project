@@ -4,22 +4,21 @@ import com.ord.core.crud.dto.CommonResultDto;
 import com.ord.core.crud.repository.OrdEntityRepository;
 import com.ord.core.crud.repository.spec.SpecificationBuilder;
 import com.ord.core.crud.service.CrudAppService;
-import com.ord.core.util.StringUtils;
+import com.ord.tutorial.dto.admin_user.AdminUserDto;
+import com.ord.tutorial.dto.admin_user.AdminUserCreateDto;
+import com.ord.tutorial.dto.admin_user.AdminUserUpdateDto;
 import com.ord.tutorial.dto.user.*;
 import com.ord.tutorial.entity.User;
 import com.ord.tutorial.enums.PermissionValue;
 import com.ord.tutorial.repository.UserRepository;
 import com.ord.tutorial.service.RoleService;
-import com.ord.tutorial.service.UserService;
-import com.ord.tutorial.service.impl.RoleServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -30,8 +29,8 @@ public class AdminUserApiResource extends CrudAppService<
         AdminUserDto,
         UserPageRequest,
         AdminUserDto,
-        UserCreateDto,
-        UserUpdateDto> {
+        AdminUserCreateDto,
+        AdminUserUpdateDto> {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleService roleService;
@@ -46,7 +45,7 @@ public class AdminUserApiResource extends CrudAppService<
     }
 
     @Override
-    protected void validationBeforeCreate(UserCreateDto userDto) {
+    protected void validationBeforeCreate(AdminUserCreateDto userDto) {
         if (userRepository.existsByUsername(userDto.getUsername())) {
             throwBusiness("username.exists");
         }
@@ -56,11 +55,25 @@ public class AdminUserApiResource extends CrudAppService<
     }
 
     @Override
-    protected User convertCreateInputToEntity(UserCreateDto userCreateDto) {
+    protected User convertCreateInputToEntity(AdminUserCreateDto userCreateDto) {
         var user = super.convertCreateInputToEntity(userCreateDto);
         user.setPassword(passwordEncoder.encode(userCreateDto.getPassword()));
         user.setEnabled(Boolean.TRUE);
         return user;
+    }
+
+
+    @Override
+    protected void handleAfterCreate(User createdEntity, AdminUserCreateDto adminUserCreateDto) {
+        roleService.assignRoleToUser(createdEntity.getId(), adminUserCreateDto.getRoleIds());
+    }
+
+    @Override
+    protected void handleAfterUpdate(User updatedEntity, AdminUserUpdateDto adminUserUpdateDto) {
+        List<Integer> oldRoles = roleService.getRoleIdsByUserId(updatedEntity.getId());
+        if (!oldRoles.equals(adminUserUpdateDto.getRoleIds())) {
+            roleService.assignRoleToUser(updatedEntity.getId(), adminUserUpdateDto.getRoleIds());
+        }
     }
 
     @Override
@@ -84,8 +97,8 @@ public class AdminUserApiResource extends CrudAppService<
     }
 
     @Override
-    protected void validationBeforeUpdate(UserUpdateDto userDto, User entityToUpdate) {
-        if (userRepository.existsByEmailAndIdNot(userDto.getEmail(), entityToUpdate.getId())) {
+    protected void validationBeforeUpdate(AdminUserUpdateDto aUserDto, User entityToUpdate) {
+        if (userRepository.existsByEmailAndIdNot(aUserDto.getEmail(), entityToUpdate.getId())) {
             throwBusiness("email.exists");
         }
     }
