@@ -1,134 +1,37 @@
 package com.ord.tutorial.api;
 
 import com.ord.core.crud.dto.CommonResultDto;
-import com.ord.core.crud.repository.OrdEntityRepository;
-import com.ord.core.crud.repository.spec.SpecificationBuilder;
-import com.ord.core.crud.service.CrudAppService;
-import com.ord.core.util.StringUtils;
-import com.ord.tutorial.dto.user.*;
-import com.ord.tutorial.entity.User;
-import com.ord.tutorial.enums.PermissionValue;
-import com.ord.tutorial.repository.UserRepository;
-import lombok.AllArgsConstructor;
-import org.apache.kafka.common.security.auth.AuthenticationContext;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.time.LocalDateTime;
+import com.ord.tutorial.dto.user.ChangePasswordDto;
+import com.ord.tutorial.dto.user.UserDto;
+import com.ord.tutorial.dto.user.UserUpdateDto;
+import com.ord.tutorial.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@AllArgsConstructor
-@RequestMapping("/api/users")
-public class UserApiResource extends CrudAppService<
-        User,
-        Long,
-        UserDto,
-        UserPageRequest,
-        UserDto,
-        UserCreateDto,
-        UserUpdateDto> {
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+@RequiredArgsConstructor
+@RequestMapping("/api/user")
+public class UserApiResource {
 
-    @Override
-    protected Specification<User> buildSpecificationForPaging(UserPageRequest pageRequest) {
-        return SpecificationBuilder.<User>builder()
-                .withLikeFts(pageRequest.getFts(), "username", "email", "fullName")
-                .withEqIfNotNull("enabled", pageRequest.getIsActive())
-                .withRange("createdDate", pageRequest.getCreatedDate())
-                .build();
+    private final UserService userService;
+    private final ModelMapper objectMapper;
+    @PostMapping(path = "/update-profile")
+    public CommonResultDto<UserDto> updateProfile(@RequestBody UserUpdateDto input) {
+        var updateDto = userService.updateProfile(input);
+        return CommonResultDto.success(updateDto);
     }
-
-    @Override
-    protected void validationBeforeCreate(UserCreateDto userDto) {
-        if (userRepository.existsByUsername(userDto.getUsername())) {
-            throwBusiness("username.exists");
-        }
-        if (userRepository.existsByEmail(userDto.getEmail())) {
-            throwBusiness("email.exists");
-        }
-    }
-
-    @Override
-    protected User convertCreateInputToEntity(UserCreateDto userCreateDto) {
-        var user = super.convertCreateInputToEntity(userCreateDto);
-        user.setPassword(passwordEncoder.encode(userCreateDto.getPassword()));
-        user.setEnabled(Boolean.TRUE);
-        return user;
-    }
-
-    @Override
-    protected String getGetPagedListPolicy() {
-        return PermissionValue.USER_GET_PAGED.getValue();
-    }
-
-    @Override
-    protected String getCreatePolicy() {
-        return PermissionValue.USER_CREATE.getValue();
-    }
-
-    @Override
-    protected String getUpdatePolicy() {
-        return PermissionValue.USER_UPDATE.getValue();
-    }
-
-    @Override
-    protected String getRemovePolicy() {
-        return PermissionValue.USER_DELETE.getValue();
-    }
-
-    @Override
-    protected void validationBeforeUpdate(UserUpdateDto userDto, User entityToUpdate) {
-        if (userRepository.existsByEmailAndIdNot(userDto.getEmail(), entityToUpdate.getId())) {
-            throwBusiness("email.exists");
-        }
-    }
-
-    @Override
-    protected void applyUpdateToEntity(UserUpdateDto userUpdateDto, User entityToUpdate) {
-        if (!StringUtils.isNullOrBlank(userUpdateDto.getPassword())) {
-            entityToUpdate.setPassword(passwordEncoder.encode(userUpdateDto.getPassword()));
-        } else {
-            userUpdateDto.setPassword(entityToUpdate.getPassword());
-        }
-        super.applyUpdateToEntity(userUpdateDto, entityToUpdate);
-    }
-
-    protected void checkUpdateSelf() {
-        hasRole(PermissionValue.USER_UPDATE_SELF.getValue());
-    }
-
-//    @PostMapping(path = "/update-profile")
-//    public CommonResultDto<UserDto> updateProfile(UserUpdateDto input) {
-//        checkUpdateSelf();
-//
-//    }
 
     @GetMapping(path = "/me")
-    public CommonResultDto<UserDetailDto> getCurrentUser() {
-        var username = SecurityContextHolder.getContext().getAuthentication().getName();
-        var user = userRepository.findByUsername(username);
-        if (user.isEmpty()) {
-            throwBusiness("user.not-found");
-        }
-        UserDetailDto userDto = objectMapper.map(user.get(), UserDetailDto.class);
+    public CommonResultDto<UserDto> getCurrentUser() {
+        UserDto userDto = objectMapper.map(userService.getCurrentUser(), UserDto.class);
         return CommonResultDto.success(userDto);
     }
 
-    @Override
-    protected OrdEntityRepository<User, Long> getRepository() {
-        return userRepository;
-    }
-
-    @Override
-    protected String getEntityName() {
-        return "user";
+    @PostMapping(path = "/change-password")
+    public CommonResultDto<Void> changePassword(@RequestBody ChangePasswordDto input) {
+        userService.ChangePassword(input);
+        return CommonResultDto.success("success.operation");
     }
 
 }

@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public abstract class SimpleCrudAppService<
         TEntity extends BaseEntity<TKey>,
         TKey,

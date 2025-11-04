@@ -14,8 +14,11 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -27,21 +30,36 @@ public class RoleServiceImpl  implements
     private final ModelMapper objectMapper;
     private final UserRoleRepository userRoleRepository;
 
+    @Transactional
     @Override
     public void assignPermissionsToRole(AssignPermissionDto dto) {
         RoleEntity role = roleRepository.findById(dto.getRoleId())
-                .orElseThrow(() -> new IllegalArgumentException("Role not found with id: " + dto.getRoleId()));
-        rolePermissionRepository.deleteByRoleId(dto.getRoleId());
-        for (String permissionName : dto.getPermissionNames()) {
-            rolePermissionRepository.save(
-                    new RolePermissionEntity(
-                            null,
-                            dto.getRoleId(),
-                            permissionName
-                    )
-            );
+                .orElseThrow(() -> new IllegalArgumentException("Role not found"));
+
+        List<String> existingPermissions =
+                rolePermissionRepository.findByRoleIds(List.of((dto.getRoleId())));
+
+        Set<String> newPermissions = new HashSet<>(dto.getPermissionNames());
+
+        // Quyền cần thêm
+        Set<String> permissionsToAdd = new HashSet<>(newPermissions);
+        permissionsToAdd.removeAll(existingPermissions);
+
+        // Quyền cần xóa
+        Set<String> permissionsToRemove = new HashSet<>(existingPermissions);
+        permissionsToRemove.removeAll(newPermissions);
+
+        // Delete
+        if (!permissionsToRemove.isEmpty()) {
+            rolePermissionRepository.deleteByRoleIdAndPermissionNames(dto.getRoleId(), permissionsToRemove);
+        }
+
+        // Insert
+        for (String perm : permissionsToAdd) {
+            rolePermissionRepository.save(new RolePermissionEntity(null, dto.getRoleId(), perm));
         }
     }
+
     public void assignRoleToUser(Long userId, List<Integer> roleId) {
         userRoleRepository.deleteByUserId(userId);
         for (Integer rId : roleId) {
@@ -59,7 +77,14 @@ public class RoleServiceImpl  implements
     public List<String> getRolePermissions(Integer roleId) {
         return rolePermissionRepository.findByRoleIds(List.of(roleId));
     }
+    public List<String> getRoleNameByUserId(Long userId) {
+        return roleRepository.findRoleNamesByUserId(userId);
+    }
 
+
+    public List<String> getPermissionByUserId(Long userId) {
+        return rolePermissionRepository.getRolePermissionEntitiesByUserId(userId);
+    }
     @Override
     public List<RoleDto> getAllRoles() {
         return roleRepository.findAll().stream()

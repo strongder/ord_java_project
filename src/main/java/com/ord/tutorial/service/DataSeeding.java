@@ -73,7 +73,18 @@ public class DataSeeding implements CommandLineRunner {
                 new RolePermissionEntity(null, 1, PermissionValue.WARD_GET_PAGED.getValue()),
                 new RolePermissionEntity(null, 1, PermissionValue.WARD_CREATE.getValue()),
                 new RolePermissionEntity(null, 1, PermissionValue.WARD_UPDATE.getValue()),
-                new RolePermissionEntity(null, 1, PermissionValue.WARD_DELETE.getValue())
+                new RolePermissionEntity(null, 1, PermissionValue.WARD_DELETE.getValue()),
+
+                new RolePermissionEntity(null, 1, PermissionValue.ADMIN_USER_GET_PAGED.getValue()),
+                new RolePermissionEntity(null, 1, PermissionValue.ADMIN_USER_CREATE.getValue()),
+                new RolePermissionEntity(null, 1, PermissionValue.ADMIN_USER_UPDATE.getValue()),
+                new RolePermissionEntity(null, 1, PermissionValue.ADMIN_USER_DELETE.getValue()),
+
+                new RolePermissionEntity(null, 1, PermissionValue.ROLE_GET_PAGE.getValue()),
+                new RolePermissionEntity(null, 1, PermissionValue.ROLE_CREATE.getValue()),
+                new RolePermissionEntity(null, 1, PermissionValue.ROLE_UPDATE.getValue()),
+                new RolePermissionEntity(null, 1, PermissionValue.ROLE_DELETE.getValue()),
+                new RolePermissionEntity(null, 1, PermissionValue.ASSIGN_PERMISSION_TO_ROLE.getValue())
         );
         rpRepo.saveAll(rolePermissions);
     }

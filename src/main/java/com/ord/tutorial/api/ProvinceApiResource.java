@@ -50,6 +50,8 @@ public class ProvinceApiResource extends SimpleCrudAppService<
         var result =  provinces.stream()
                 .map(entity -> objectMapper.map(entity, ProvinceDto.class))
                 .toList();
+        //encodeId cho từng item
+        result.forEach(dto -> dto.setEncodedId(encodeId(dto.getId())));
         return CommonResultDto.success(result);
     }
 
@@ -75,7 +77,6 @@ public class ProvinceApiResource extends SimpleCrudAppService<
     protected Integer getTotalCount(PagedResultRequestDto pagedResultRequestDto) {
         return provinceDao.getPageCount(pagedResultRequestDto);
     }
-
 
     @Override
     protected Specification<ProvinceEntity> buildSpecificationForPaging(PagedResultRequestDto input) {

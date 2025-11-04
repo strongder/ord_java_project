@@ -60,4 +60,8 @@ public class PagedResultRequestDto implements Serializable {
         }
         return StringUtils.removeVietnameseAccents(filter).trim().toLowerCase();
     }
+
+    public String getSorting() {
+        return StringUtils.isNullOrEmpty(sorting) ? "id asc" : sorting;
+    }
 }

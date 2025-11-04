@@ -5,6 +5,5 @@ import lombok.Data;
 
 @Data
 public class RoleDto extends EncodedIdDto<Integer> {
-    private Integer id;
     private String roleName;
 }

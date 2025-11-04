@@ -8,10 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserUpdateDto extends UserDtoBase {
-    @Size(min = 6, max = 100, message = "Mật khẩu phải từ 6 đến 32 ký tự")
-    @Pattern(
-            regexp = "^(?=.*[A-Za-z])(?=.*\\d).+$",
-            message = "Mật khẩu phải chứa ít nhất 1 chữ cái và 1 số"
-    )
-    private String password;
+
+    @Size(min = 3, max = 100, message = "Họ và tên phải từ 3 đến 100 ký tự")
+    private String fullName;
 }

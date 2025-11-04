@@ -1,6 +1,7 @@
 package com.ord.core.crud.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.ord.core.crud.enums.CommonResultCode;
 import com.ord.core.crud.service.I18nService;
@@ -19,6 +20,7 @@ import java.util.TreeMap;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CommonResultDto<TResult> implements Serializable {
     @Serial
     private static final long serialVersionUID = 0L;

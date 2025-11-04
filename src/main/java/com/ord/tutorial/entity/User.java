@@ -32,6 +32,9 @@ public class User extends AuditTableEntity implements UserDetails, BaseEntity<Lo
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = true)
+    private String phone;
+
     @Column(name = "full_name")
     private String fullName;
 

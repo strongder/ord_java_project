@@ -6,6 +6,8 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class UserCreateDto extends UserDtoBase {
@@ -23,4 +25,6 @@ public class UserCreateDto extends UserDtoBase {
             message = "Mật khẩu phải chứa ít nhất 1 chữ cái và 1 số"
     )
     private String password;
+
+    private List<Integer> roleIds;
 }

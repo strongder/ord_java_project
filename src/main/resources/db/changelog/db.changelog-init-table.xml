@@ -54,6 +54,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="full_name" type="varchar(100)"/>
+            <column name="phone" type="varchar(20)"/>
             <column name="is_enabled" type="boolean" defaultValueBoolean="true"/>
             <column name="created_by" type="varchar(50)"/>
             <column name="created_date" type="timestamp"/>

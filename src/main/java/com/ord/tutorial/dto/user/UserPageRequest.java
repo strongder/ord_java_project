@@ -8,6 +8,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserPageRequest extends PagedResultRequestDto {
-    private Boolean isActive;
+    private Boolean enabled;
     private DateRangeFilterDto createdDate;
 }

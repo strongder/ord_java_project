@@ -16,11 +16,18 @@ public enum PermissionValue//0
     WARD_DELETE("ward.delete"),
 
 //    user
-    USER_CREATE("user.create"),
-    USER_GET_PAGED("user.get-paged"),
-    USER_UPDATE("user.update"),
-    USER_DELETE("user.delete"),
-    USER_UPDATE_SELF("user.update-self");
+    ADMIN_USER_CREATE("user.create"),
+    ADMIN_USER_GET_PAGED("user.get-paged"),
+    ADMIN_USER_UPDATE("user.update"),
+    ADMIN_USER_DELETE("user.delete"),
+    USER_UPDATE_SELF("user.update-self"),
+
+//    role
+    ROLE_CREATE("role.create"),
+    ROLE_GET_PAGE("role.get-paged"),
+    ROLE_UPDATE("role.update"),
+    ROLE_DELETE("role.delete"),
+    ASSIGN_PERMISSION_TO_ROLE("role.assign-permission-to-role");
 
     private final String value;
     PermissionValue(String value) {

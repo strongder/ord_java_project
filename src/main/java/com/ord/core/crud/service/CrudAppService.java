@@ -47,7 +47,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Slf4j
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public abstract class CrudAppService<
         TEntity extends BaseEntity<TKey>,
         TKey,
@@ -393,7 +393,7 @@ public abstract class CrudAppService<
     protected void checkGetPagedListPolicy() {
         var policy = getGetPagedListPolicy();
         if (policy != null) {
-            hasRole(policy);
+            hasPermission(policy);
         }
     }
 
@@ -404,7 +404,7 @@ public abstract class CrudAppService<
     protected void checkCreatePolicy() {
         var policy = getCreatePolicy();
         if (policy != null) {
-            hasRole(policy);
+            hasPermission(policy);
         }
     }
 
@@ -415,7 +415,7 @@ public abstract class CrudAppService<
     protected void checkUpdatePolicy() {
         var policy = getUpdatePolicy();
         if (policy != null) {
-            hasRole(policy);
+            hasPermission(policy);
         }
     }
 
@@ -426,7 +426,7 @@ public abstract class CrudAppService<
     protected void checkRemovePolicy() {
         var policy = getRemovePolicy();
         if (policy != null) {
-            hasRole(policy);
+            hasPermission(policy);
         }
     }
 
@@ -461,16 +461,16 @@ public abstract class CrudAppService<
     protected void validationBeforeRemove(TEntity entityToRemove) {
     }
 
-    protected void hasRole(String role) {
+    protected void hasPermission(String permission) {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         System.out.println("Context Authorities = " + authentication.getAuthorities());
         if (authentication == null || !authentication.isAuthenticated()) {
             throw new AccessDeniedException("access.denied");
         }
-        boolean hasRole = authentication.getAuthorities().stream()
+        boolean hasPermission = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
-                .anyMatch(r -> r.equalsIgnoreCase(role));
-        if (!hasRole) {
+                .anyMatch(r -> r.equalsIgnoreCase(permission));
+        if (!hasPermission) {
             throw new AccessDeniedException("access.denied");
         }
     }

@@ -22,7 +22,7 @@ public class JpaAuditConfig {
                 if (auth == null || !auth.isAuthenticated()) {
                     return Optional.empty();
                 }
-                return Optional.ofNullable(auth.getName()); // hoặc lấy email/userId
+                return Optional.ofNullable(auth.getName()); // lay username lam auditor
             }
         };
     }
