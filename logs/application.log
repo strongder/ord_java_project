@@ -1,0 +1,306 @@
+2025-11-11 11:29:06.178 [main] INFO  c.ord.tutorial.TutorialApplication - Starting TutorialApplication using Java 21.0.8 with PID 4248 (D:\java\java_buoi2\target\classes started by Admin in D:\java\java_buoi2)
+2025-11-11 11:29:06.180 [main] INFO  c.ord.tutorial.TutorialApplication - No active profile set, falling back to 1 default profile: "default"
+2025-11-11 11:29:08.822 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-11-11 11:29:08.823 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-11 11:29:08.938 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-11-11 11:29:09.095 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPoolTutorial - Starting...
+2025-11-11 11:29:09.299 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPoolTutorial - Added connection com.mysql.cj.jdbc.ConnectionImpl@28b2e4d8
+2025-11-11 11:29:09.301 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPoolTutorial - Start completed.
+2025-11-11 11:29:10.355 [main] INFO  liquibase.changelog - Creating database history table with name: tutorial_db.DATABASECHANGELOG
+2025-11-11 11:29:10.566 [main] INFO  liquibase.changelog - Reading from tutorial_db.DATABASECHANGELOG
+2025-11-11 11:29:11.193 [main] INFO  liquibase.snapshot - Creating snapshot
+2025-11-11 11:29:11.436 [main] INFO  liquibase.lockservice - Successfully acquired change log lock
+2025-11-11 11:29:11.439 [main] INFO  liquibase.command - Using deploymentId: 2835349066
+2025-11-11 11:29:11.445 [main] INFO  liquibase.changelog - Reading from tutorial_db.DATABASECHANGELOG
+2025-11-11 11:29:11.527 [main] INFO  liquibase.ui - Running Changeset: db/changelog/db.changelog-init-table.xml::001::thanhnv
+2025-11-11 11:29:11.632 [main] INFO  liquibase.changelog - Table provinces created
+2025-11-11 11:29:11.723 [main] INFO  liquibase.changelog - Table wards created
+2025-11-11 11:29:11.823 [main] INFO  liquibase.changelog - Table users created
+2025-11-11 11:29:11.921 [main] INFO  liquibase.changelog - Table roles created
+2025-11-11 11:29:12.007 [main] INFO  liquibase.changelog - Table user_roles created
+2025-11-11 11:29:12.091 [main] INFO  liquibase.changelog - Table role_permissions created
+2025-11-11 11:29:12.095 [main] INFO  liquibase.changelog - ChangeSet db/changelog/db.changelog-init-table.xml::001::thanhnv ran successfully in 565ms
+2025-11-11 11:29:12.136 [main] INFO  liquibase.ui - Running Changeset: db/changelog/db.changelog-import-data-province-ward.xml::003::thanhnv
+2025-11-11 11:29:12.306 [main] INFO  liquibase.changelog - Data loaded from 'db/csv/tinh.csv' into table 'provinces'
+2025-11-11 11:29:22.035 [main] INFO  liquibase.changelog - Data loaded from 'db/csv/xa.csv' into table 'wards'
+2025-11-11 11:29:22.054 [main] INFO  liquibase.changelog - ChangeSet db/changelog/db.changelog-import-data-province-ward.xml::003::thanhnv ran successfully in 9917ms
+2025-11-11 11:29:22.075 [main] INFO  liquibase.util - UPDATE SUMMARY
+2025-11-11 11:29:22.075 [main] INFO  liquibase.util - Run:                          2
+2025-11-11 11:29:22.076 [main] INFO  liquibase.util - Previously run:               0
+2025-11-11 11:29:22.076 [main] INFO  liquibase.util - Filtered out:                 0
+2025-11-11 11:29:22.076 [main] INFO  liquibase.util - -------------------------------
+2025-11-11 11:29:22.076 [main] INFO  liquibase.util - Total change sets:            2
+2025-11-11 11:29:22.077 [main] INFO  liquibase.util - Update summary generated
+2025-11-11 11:29:22.080 [main] INFO  liquibase.command - Update command completed successfully.
+2025-11-11 11:29:22.080 [main] INFO  liquibase.ui - Liquibase: Update has been successful. Rows affected: 2
+2025-11-11 11:29:22.097 [main] INFO  liquibase.lockservice - Successfully released change log lock
+2025-11-11 11:29:22.100 [main] INFO  liquibase.command - Command execution complete
+2025-11-11 11:29:23.963 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-11 11:29:28.083 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-11 11:29:28.358 [main] WARN  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-11-11 11:29:29.158 [main] INFO  c.ord.tutorial.TutorialApplication - Started TutorialApplication in 23.689 seconds (process running for 25.367)
+2025-11-11 11:29:29.251 [main] DEBUG org.hibernate.SQL - 
+    select
+        count(*) 
+    from
+        roles re1_0
+2025-11-11 11:29:29.295 [main] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        roles
+        (role_name) 
+    values
+        (?)
+2025-11-11 11:29:29.310 [main] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        roles
+        (role_name) 
+    values
+        (?)
+2025-11-11 11:29:29.313 [main] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        roles
+        (role_name) 
+    values
+        (?)
+2025-11-11 11:29:29.315 [main] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        roles
+        (role_name) 
+    values
+        (?)
+2025-11-11 11:29:29.325 [main] DEBUG org.hibernate.SQL - 
+    select
+        count(*) 
+    from
+        role_permissions rpe1_0
+2025-11-11 11:29:29.329 [main] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        role_permissions
+        (permission_name, role_id) 
+    values
+        (?, ?)
+2025-11-11 11:29:29.333 [main] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        role_permissions
+        (permission_name, role_id) 
+    values
+        (?, ?)
+2025-11-11 11:29:29.336 [main] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        role_permissions
+        (permission_name, role_id) 
+    values
+        (?, ?)
+2025-11-11 11:29:29.338 [main] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        role_permissions
+        (permission_name, role_id) 
+    values
+        (?, ?)
+2025-11-11 11:29:29.341 [main] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        role_permissions
+        (permission_name, role_id) 
+    values
+        (?, ?)
+2025-11-11 11:29:29.343 [main] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        role_permissions
+        (permission_name, role_id) 
+    values
+        (?, ?)
+2025-11-11 11:29:29.346 [main] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        role_permissions
+        (permission_name, role_id) 
+    values
+        (?, ?)
+2025-11-11 11:29:29.348 [main] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        role_permissions
+        (permission_name, role_id) 
+    values
+        (?, ?)
+2025-11-11 11:29:29.351 [main] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        role_permissions
+        (permission_name, role_id) 
+    values
+        (?, ?)
+2025-11-11 11:29:29.353 [main] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        role_permissions
+        (permission_name, role_id) 
+    values
+        (?, ?)
+2025-11-11 11:29:29.356 [main] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        role_permissions
+        (permission_name, role_id) 
+    values
+        (?, ?)
+2025-11-11 11:29:29.358 [main] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        role_permissions
+        (permission_name, role_id) 
+    values
+        (?, ?)
+2025-11-11 11:29:29.361 [main] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        role_permissions
+        (permission_name, role_id) 
+    values
+        (?, ?)
+2025-11-11 11:29:29.363 [main] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        role_permissions
+        (permission_name, role_id) 
+    values
+        (?, ?)
+2025-11-11 11:29:29.365 [main] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        role_permissions
+        (permission_name, role_id) 
+    values
+        (?, ?)
+2025-11-11 11:29:29.368 [main] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        role_permissions
+        (permission_name, role_id) 
+    values
+        (?, ?)
+2025-11-11 11:29:29.370 [main] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        role_permissions
+        (permission_name, role_id) 
+    values
+        (?, ?)
+2025-11-11 11:29:29.374 [main] DEBUG org.hibernate.SQL - 
+    select
+        count(*) 
+    from
+        users u1_0
+2025-11-11 11:29:29.507 [main] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        users
+        (created_by, created_date, email, is_enabled, full_name, last_modified_by, last_modified_date, password, phone, username) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-11-11 11:29:29.539 [main] DEBUG org.hibernate.SQL - 
+    select
+        re1_0.id 
+    from
+        roles re1_0 
+    where
+        re1_0.role_name=?
+2025-11-11 11:29:29.544 [main] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        user_roles
+        (role_id, user_id) 
+    values
+        (?, ?)
+2025-11-11 11:32:28.284 [HikariPoolTutorial:housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - HikariPoolTutorial - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@be8a2e7 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2025-11-11 11:32:39.146 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPoolTutorial - Shutdown initiated...
+2025-11-11 11:53:56.479 [main] INFO  c.ord.tutorial.TutorialApplication - Starting TutorialApplication using Java 21.0.8 with PID 19612 (D:\java\java_buoi2\target\classes started by Admin in D:\java\java_buoi2)
+2025-11-11 11:53:56.481 [main] INFO  c.ord.tutorial.TutorialApplication - No active profile set, falling back to 1 default profile: "default"
+2025-11-11 11:53:59.088 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPoolTutorial - Starting...
+2025-11-11 11:55:24.408 [main] INFO  c.ord.tutorial.TutorialApplication - Starting TutorialApplication using Java 21.0.8 with PID 18596 (D:\java\java_buoi2\target\classes started by Admin in D:\java\java_buoi2)
+2025-11-11 11:55:24.412 [main] INFO  c.ord.tutorial.TutorialApplication - No active profile set, falling back to 1 default profile: "default"
+2025-11-11 11:55:26.749 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-11-11 11:55:26.750 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-11 11:55:26.849 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-11-11 11:55:27.011 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPoolTutorial - Starting...
+2025-11-11 11:55:27.221 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPoolTutorial - Added connection com.mysql.cj.jdbc.ConnectionImpl@5cd701e4
+2025-11-11 11:55:27.223 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPoolTutorial - Start completed.
+2025-11-11 11:55:28.408 [main] INFO  liquibase.changelog - Reading from tutorial_db.databasechangelog
+2025-11-11 11:55:28.546 [main] INFO  liquibase.ui - Database is up to date, no changesets to execute
+2025-11-11 11:55:28.550 [main] INFO  liquibase.changelog - Reading from tutorial_db.databasechangelog
+2025-11-11 11:55:28.559 [main] INFO  liquibase.util - UPDATE SUMMARY
+2025-11-11 11:55:28.559 [main] INFO  liquibase.util - Run:                          0
+2025-11-11 11:55:28.560 [main] INFO  liquibase.util - Previously run:               2
+2025-11-11 11:55:28.560 [main] INFO  liquibase.util - Filtered out:                 0
+2025-11-11 11:55:28.560 [main] INFO  liquibase.util - -------------------------------
+2025-11-11 11:55:28.560 [main] INFO  liquibase.util - Total change sets:            2
+2025-11-11 11:55:28.561 [main] INFO  liquibase.util - Update summary generated
+2025-11-11 11:55:28.563 [main] INFO  liquibase.command - Command execution complete
+2025-11-11 11:55:30.208 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-11 11:55:34.009 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-11 11:55:34.254 [main] WARN  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-11-11 11:55:35.021 [main] INFO  c.ord.tutorial.TutorialApplication - Started TutorialApplication in 11.282 seconds (process running for 12.068)
+2025-11-11 11:55:35.106 [main] DEBUG org.hibernate.SQL - 
+    select
+        count(*) 
+    from
+        roles re1_0
+2025-11-11 11:55:35.140 [main] DEBUG org.hibernate.SQL - 
+    select
+        count(*) 
+    from
+        role_permissions rpe1_0
+2025-11-11 11:55:35.157 [main] DEBUG org.hibernate.SQL - 
+    select
+        count(*) 
+    from
+        users u1_0
+2025-11-11 11:55:36.993 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPoolTutorial - Shutdown initiated...
+2025-11-11 11:55:37.000 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPoolTutorial - Shutdown completed.
+2025-11-11 11:56:15.475 [main] INFO  c.o.t.TutorialApplicationTests - Starting TutorialApplicationTests using Java 21.0.8 with PID 8300 (started by Admin in D:\java\java_buoi2)
+2025-11-11 11:56:15.477 [main] INFO  c.o.t.TutorialApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2025-11-11 11:56:18.224 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPoolTutorial - Starting...
+2025-11-11 11:56:18.481 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPoolTutorial - Added connection com.mysql.cj.jdbc.ConnectionImpl@35841d6
+2025-11-11 11:56:18.483 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPoolTutorial - Start completed.
+2025-11-11 11:56:19.343 [main] INFO  liquibase.changelog - Reading from tutorial_db.databasechangelog
+2025-11-11 11:56:19.465 [main] INFO  liquibase.ui - Database is up to date, no changesets to execute
+2025-11-11 11:56:19.470 [main] INFO  liquibase.changelog - Reading from tutorial_db.databasechangelog
+2025-11-11 11:56:19.481 [main] INFO  liquibase.util - UPDATE SUMMARY
+2025-11-11 11:56:19.481 [main] INFO  liquibase.util - Run:                          0
+2025-11-11 11:56:19.482 [main] INFO  liquibase.util - Previously run:               2
+2025-11-11 11:56:19.482 [main] INFO  liquibase.util - Filtered out:                 0
+2025-11-11 11:56:19.482 [main] INFO  liquibase.util - -------------------------------
+2025-11-11 11:56:19.483 [main] INFO  liquibase.util - Total change sets:            2
+2025-11-11 11:56:19.484 [main] INFO  liquibase.util - Update summary generated
+2025-11-11 11:56:19.486 [main] INFO  liquibase.command - Command execution complete
+2025-11-11 11:56:21.325 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-11 11:56:25.429 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-11 11:56:25.725 [main] WARN  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-11-11 11:56:26.442 [main] INFO  c.o.t.TutorialApplicationTests - Started TutorialApplicationTests in 11.549 seconds (process running for 13.323)
+2025-11-11 11:56:26.531 [main] DEBUG org.hibernate.SQL - 
+    select
+        count(*) 
+    from
+        roles re1_0
+2025-11-11 11:56:26.553 [main] DEBUG org.hibernate.SQL - 
+    select
+        count(*) 
+    from
+        role_permissions rpe1_0
+2025-11-11 11:56:26.557 [main] DEBUG org.hibernate.SQL - 
+    select
+        count(*) 
+    from
+        users u1_0
+2025-11-11 11:56:27.395 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPoolTutorial - Shutdown initiated...
+2025-11-11 11:56:27.408 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPoolTutorial - Shutdown completed.

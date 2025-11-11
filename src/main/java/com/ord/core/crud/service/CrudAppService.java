@@ -463,7 +463,6 @@ public abstract class CrudAppService<
 
     protected void hasPermission(String permission) {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("Context Authorities = " + authentication.getAuthorities());
         if (authentication == null || !authentication.isAuthenticated()) {
             throw new AccessDeniedException("access.denied");
         }

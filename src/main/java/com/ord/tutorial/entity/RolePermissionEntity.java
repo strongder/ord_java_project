@@ -1,7 +1,6 @@
 package com.ord.tutorial.entity;
 
 import com.ord.core.crud.entity.BaseEntity;
-import com.ord.tutorial.enums.PermissionValue;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -3,7 +3,6 @@ package com.ord.tutorial.service.impl;
 import com.ord.tutorial.dto.role_per.AssignPermissionDto;
 
 import com.ord.tutorial.dto.role_per.RoleDto;
-import com.ord.tutorial.entity.RoleEntity;
 import com.ord.tutorial.entity.RolePermissionEntity;
 import com.ord.tutorial.entity.UserRoleEntity;
 import com.ord.tutorial.repository.RolePermissionRepository;
@@ -32,27 +31,21 @@ public class RoleServiceImpl  implements
     @Transactional
     @Override
     public void assignPermissionsToRole(AssignPermissionDto dto) {
-        RoleEntity role = roleRepository.findById(dto.getRoleId())
+        roleRepository.findById(dto.getRoleId())
                 .orElseThrow(() -> new IllegalArgumentException("Role not found"));
-
         List<String> existingPermissions =
                 rolePermissionRepository.findByRoleIds(List.of((dto.getRoleId())));
-
         Set<String> newPermissions = new HashSet<>(dto.getPermissionNames());
-
         // Quyền cần thêm
         Set<String> permissionsToAdd = new HashSet<>(newPermissions);
         permissionsToAdd.removeAll(existingPermissions);
-
         // Quyền cần xóa
         Set<String> permissionsToRemove = new HashSet<>(existingPermissions);
         permissionsToRemove.removeAll(newPermissions);
-
         // Delete
         if (!permissionsToRemove.isEmpty()) {
             rolePermissionRepository.deleteByRoleIdAndPermissionNames(dto.getRoleId(), permissionsToRemove);
         }
-
         // Insert
         for (String perm : permissionsToAdd) {
             rolePermissionRepository.save(new RolePermissionEntity(null, dto.getRoleId(), perm));

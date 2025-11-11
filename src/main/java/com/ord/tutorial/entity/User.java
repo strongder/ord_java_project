@@ -39,7 +39,7 @@ public class User extends AuditTableEntity implements UserDetails, BaseEntity<Lo
     private String fullName;
 
     @Column(name = "is_enabled")
-    private Boolean enabled = true;
+    private boolean enabled = true;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

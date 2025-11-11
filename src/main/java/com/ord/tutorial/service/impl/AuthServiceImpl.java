@@ -5,7 +5,6 @@ import com.ord.core.security.jwt.JwtClaimNames;
 import com.ord.core.security.jwt.JwtService;
 import com.ord.core.util.StringUtils;
 import com.ord.tutorial.dto.auth.RegisterDto;
-import com.ord.tutorial.entity.RoleEntity;
 import com.ord.tutorial.entity.User;
 import com.ord.tutorial.enums.Role;
 import com.ord.tutorial.repository.RolePermissionRepository;
@@ -44,7 +43,7 @@ public class AuthServiceImpl implements AuthService {
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throwUserInvalid();
         }
-        if (!user.getEnabled()) {
+        if (!user.isEnabled()) {
             throw new OrdBusinessException("auth.inactive");
         }
         List<Integer> roleIds = userRoleRepository.findRoleIdsByUserId(user.getId());

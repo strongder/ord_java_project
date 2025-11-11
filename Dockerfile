@@ -22,7 +22,7 @@ WORKDIR /app
 COPY --from=builder /app/target/*.jar app.jar
 
 # Biến môi trường (tùy chọn)
-ENV JAVA_OPTS="-Xms256m -Xmx512m"
+#ENV JAVA_OPTS="-Xms256m -Xmx512m"
 
 # Lệnh khởi chạy ứng dụng
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
