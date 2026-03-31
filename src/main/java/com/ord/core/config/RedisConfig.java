@@ -45,9 +45,5 @@ public class RedisConfig {
         return template;
     }
 
-
-//    //thêm cache caffein
-//    @Bean
-//    public CacheManager ca
 }
 

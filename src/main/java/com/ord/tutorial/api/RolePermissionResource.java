@@ -29,14 +29,14 @@ public class RolePermissionResource extends SimpleCrudAppService<RoleEntity, Int
     public CommonResultDto<?> assignPermissionsToRole(@RequestBody AssignPermissionDto dto) {
         hasPermission(PermissionValue.ASSIGN_PERMISSION_TO_ROLE.getValue());
         roleService.assignPermissionsToRole(dto);
-        return commonResultFactory.success("success.operation");
+        return success("success.operation");
     }
 
     @GetMapping("/get-permissions/{roleEnCodeId}")
     public CommonResultDto<List<String>> getRolePermissions(@PathVariable String roleEnCodeId) {
         var roleDto = getEntityDtoByEncodedId(roleEnCodeId);
         var permissions = roleService.getRolePermissions(roleDto.getId());
-        return commonResultFactory.success(permissions);
+        return success(permissions);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class RolePermissionResource extends SimpleCrudAppService<RoleEntity, Int
     @GetMapping("/get-all")
     public CommonResultDto<List<RoleDto>> getAllRole() {
         var permissions = roleService.getAllRoles();
-        return commonResultFactory.success(permissions);
+        return success(permissions);
     }
     @Override
     protected OrdEntityRepository<RoleEntity, Integer> getRepository() {

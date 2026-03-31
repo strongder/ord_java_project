@@ -4,13 +4,14 @@ import com.ord.core.crud.dto.CommonResultDto;
 import com.ord.core.crud.enums.CommonResultCode;
 import com.ord.core.util.Translator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
 public class CommonResultFactory {
 
-    private final Translator translator;
+    @Autowired
+    private Translator translator;
 
     public <T> CommonResultDto<T> success(T data) {
         return CommonResultDto.<T>builder()

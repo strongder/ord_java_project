@@ -8,7 +8,9 @@ public enum CommonResultCode {
     NOT_FOUND("404"),
     ERR_SERVER("500"),
     METHOD_NOT_ALLOWED("405"),
-    ENDPOINT_NOT_FOUND("406");
+    ENDPOINT_NOT_FOUND("406"),
+    TOO_MANY_REQUEST("429");
+
     private final String text;
 
     CommonResultCode(final String text) {

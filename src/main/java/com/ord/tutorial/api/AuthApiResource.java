@@ -13,19 +13,18 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/auth")
-public class AuthApiResource {
+public class AuthApiResource extends CommonResultFactory{
     private final AuthService authService;
-    private final CommonResultFactory commonResultFactory;
 
     @PostMapping(path = "/login")
     public CommonResultDto<LoginOutputDto> login(@Valid @RequestBody LoginInputDto input) {
         var token = authService.login(input.getUsername(), input.getPassword());
-        return commonResultFactory.success(LoginOutputDto.builder().token(token).build());
+        return success(LoginOutputDto.builder().token(token).build());
     }
 
     @PostMapping(path = "/register")
     public CommonResultDto<String> register(@Valid @RequestBody RegisterDto input) {
         authService.register(input);
-        return commonResultFactory.success("register.success");
+        return success("register.success");
     }
 }

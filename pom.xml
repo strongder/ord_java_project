@@ -133,6 +133,13 @@
             <optional>true</optional>
         </dependency>
 
+<!--        token bucket-->
+        <dependency>
+            <groupId>com.bucket4j</groupId>
+            <artifactId>bucket4j-redis</artifactId>
+            <version>8.10.1</version>
+        </dependency>
+
         <!--Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -13,26 +13,26 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
-public class UserApiResource {
+public class UserApiResource extends CommonResultFactory {
 
     private final UserService userService;
     private final ModelMapper objectMapper;
-    private final CommonResultFactory commonResultFactory;
+
     @PostMapping(path = "/update-profile")
     public CommonResultDto<UserDto> updateProfile(@RequestBody UserUpdateDto input) {
         var updateDto = userService.updateProfile(input);
-        return commonResultFactory.success(updateDto);
+        return success(updateDto);
     }
 
     @GetMapping(path = "/me")
     public CommonResultDto<UserDto> getCurrentUser() {
         UserDto userDto = objectMapper.map(userService.getCurrentUser(), UserDto.class);
-        return commonResultFactory.success(userDto);
+        return success(userDto);
     }
 
     @PostMapping(path = "/change-password")
     public CommonResultDto<Void> changePassword(@RequestBody ChangePasswordDto input) {
         userService.changePassword(input);
-        return commonResultFactory.success("success.operation");
+        return success("success.operation");
     }
 }
