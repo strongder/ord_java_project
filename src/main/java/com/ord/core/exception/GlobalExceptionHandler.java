@@ -1,12 +1,9 @@
 package com.ord.core.exception;
 
 import com.ord.core.crud.enums.CommonResultCode;
-import com.ord.core.crud.service.I18nService;
+import com.ord.core.util.Translator;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContext;
-import org.springframework.context.i18n.LocaleContextHolder;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -18,52 +15,50 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 @ControllerAdvice
+@RequiredArgsConstructor
 public class GlobalExceptionHandler {
 
-    @Autowired
-    I18nService i18nService;
+    private final Translator translator;
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleValidation(MethodArgumentNotValidException ex) {
+    public ResponseEntity<Map<String, Object>> handleValidation(MethodArgumentNotValidException ex) {
         Map<String, Object> body = buildError(
                 CommonResultCode.BAD_REQUEST,
                 "invalid.data");
         Map<String, String> fieldErrors = new HashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(error ->
-                fieldErrors.put(error.getField(), i18nService.getMessage(error.getDefaultMessage()))
+                fieldErrors.put(error.getField(), translator.get(error.getDefaultMessage()))
         );
         body.put("errorFields", fieldErrors);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 
 
-
     @ExceptionHandler(OrdBusinessException.class)
-    public ResponseEntity<?> handleOrdBusinessException(OrdBusinessException ex) {
+    public ResponseEntity<Map<String, Object>> handleOrdBusinessException(OrdBusinessException ex) {
 
         Map<String, Object> body = buildError(
                 CommonResultCode.BAD_REQUEST,
-                i18nService.getMessage(ex.getMessage()));
+                translator.get(ex.getMessage()));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<?> handleNotFoundException(NotFoundException ex) {
+    public ResponseEntity<Map<String, Object>> handleNotFoundException(NotFoundException ex) {
         Map<String, Object> body = buildError(
                 CommonResultCode.NOT_FOUND,
-                i18nService.getMessage("data.notfound"));
+                translator.get("data.notfound"));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<?> handleAccessDeniedException(AccessDeniedException ex) {
+    public ResponseEntity<Map<String, Object>> handleAccessDeniedException(AccessDeniedException ex) {
         Map<String, Object> body = buildError(
                 CommonResultCode.FORBIDDEN,
-                i18nService.getMessage(ex.getMessage()));
+                translator.get(ex.getMessage()));
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
     }
 
@@ -71,13 +66,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, Object>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
         Map<String, Object> body = buildError(
                 CommonResultCode.BAD_REQUEST,
-                i18nService.getMessage("request.invalid"));
+                translator.get("request.invalid"));
         body.put("details", ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
-    public ResponseEntity<?> handleNotFound(NoHandlerFoundException ex) {
+    public ResponseEntity<Map<String, Object>> handleNotFound(NoHandlerFoundException ex) {
         Map<String, Object> body = buildError(
                 CommonResultCode.NOT_FOUND,
                 "endpoint.not.found"
@@ -88,7 +83,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ResponseEntity<?> handleMethodNotAllowed(HttpRequestMethodNotSupportedException ex, HttpServletRequest request) {
+    public ResponseEntity<Map<String, Object>> handleMethodNotAllowed(HttpRequestMethodNotSupportedException ex, HttpServletRequest request) {
         Map<String, Object> body = buildError(
                 CommonResultCode.METHOD_NOT_ALLOWED,
                 "method.not.allowed"
@@ -98,8 +93,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(body);
     }
 
-
-//    @ExceptionHandler(Exception.class)
+    //    @ExceptionHandler(Exception.class)
 //    public ResponseEntity<Map<String, Object>> handleAllExceptions(Exception ex) {
 //        Map<String, Object> body = buildError(
 //                CommonResultCode.ERR_SERVER,

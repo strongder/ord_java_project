@@ -3,14 +3,12 @@ package com.ord.tutorial.entity;
 import com.ord.core.crud.entity.AuditTableEntity;
 import com.ord.core.crud.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @Table(name = "provinces")

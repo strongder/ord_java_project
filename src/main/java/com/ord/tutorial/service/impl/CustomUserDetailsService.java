@@ -1,4 +1,4 @@
-package com.ord.tutorial.service;
+package com.ord.tutorial.service.impl;
 import com.ord.tutorial.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

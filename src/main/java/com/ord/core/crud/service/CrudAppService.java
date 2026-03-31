@@ -62,6 +62,9 @@ public abstract class CrudAppService<
 
     @Autowired
     protected IdCodec idCodec;
+
+    @Autowired
+    protected CommonResultFactory commonResultFactory;
     // Thêm vào CrudAppService
     private static final ConcurrentHashMap<Class<?>, Class<?>[]> GENERIC_CACHE = new ConcurrentHashMap<>();
 
@@ -80,7 +83,7 @@ public abstract class CrudAppService<
             throwNotFound(encodedId);
         }
 
-        return CommonResultDto.success(dto);
+        return commonResultFactory.success(dto);
     }
 
     /**
@@ -253,7 +256,7 @@ public abstract class CrudAppService<
     public CommonResultDto<TEntityDto> create(@RequestBody @Valid TCreateInput createInput) {
         // Validate input không được null
         if (createInput == null) {
-            return CommonResultDto.fail(CommonResultCode.BAD_REQUEST, "CrudErr.InputNull");
+            return commonResultFactory.fail(CommonResultCode.BAD_REQUEST, "CrudErr.InputNull");
         }
 
         // Kiểm tra quyền tạo mới
@@ -275,7 +278,7 @@ public abstract class CrudAppService<
         // Map entity mới tạo trở lại input để cập nhật các trường generated (như ID)
         objectMapper.map(newEntity, createInput);
 
-        return CommonResultDto.success(
+        return commonResultFactory.success(
                 convertCreatedEntityToDto(newEntity, createInput),
                 "create.success"
         );
@@ -295,7 +298,7 @@ public abstract class CrudAppService<
             @RequestBody @Valid TUpdateInput updateInput) {
         // Validate input không được null
         if (updateInput == null) {
-            return CommonResultDto.fail(CommonResultCode.BAD_REQUEST, "CrudErr.InputNull");
+            return commonResultFactory.fail(CommonResultCode.BAD_REQUEST, "CrudErr.InputNull");
         }
 
         // Kiểm tra quyền cập nhật
@@ -324,7 +327,7 @@ public abstract class CrudAppService<
         // Map entity đã cập nhật trở lại input
         objectMapper.map(entityToUpdate, updateInput);
 
-        return CommonResultDto.success(
+        return commonResultFactory.success(
                 convertUpdatedEntityToDto(entityToUpdate, updateInput),
                 "update.success"
         );
@@ -358,7 +361,7 @@ public abstract class CrudAppService<
         // Xử lý logic sau khi xóa thành công (nếu có)
         handleAfterRemove(entityToRemove);
 
-        return CommonResultDto.success(
+        return commonResultFactory.success(
                 convertRemovedEntityToDto(entityToRemove),
                 "remove.success"
         );

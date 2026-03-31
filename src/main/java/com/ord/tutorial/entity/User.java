@@ -60,9 +60,4 @@ public class User extends AuditTableEntity implements UserDetails, BaseEntity<Lo
     public boolean isCredentialsNonExpired() {
         return true;
     }
-
-    @Override
-    public boolean isEnabled() {
-        return enabled;
-    }
 }

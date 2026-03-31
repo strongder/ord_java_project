@@ -10,8 +10,9 @@ import com.ord.tutorial.repository.RolePermissionRepository;
 import com.ord.tutorial.repository.RoleRepository;
 import com.ord.tutorial.repository.UserRepository;
 import com.ord.tutorial.repository.UserRoleRepository;
-import jakarta.persistence.Column;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -21,7 +22,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class DataSeeding implements CommandLineRunner {
+public class DataSeeding implements ApplicationRunner {
 
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
@@ -31,10 +32,10 @@ public class DataSeeding implements CommandLineRunner {
 
     @Override
     @Transactional
-    public void run(String... args) {
-        if (roleRepository.count() == 0) seedDataRole();
-        if (rpRepo.count() == 0) seedDataPermission(); // cần roleId từ DB
-        if (userRepository.count() == 0) seedDataUser(); // user
+    public void run(ApplicationArguments args) throws Exception {
+        if (roleRepository.count() == 0) this.seedDataRole();
+        if (rpRepo.count() == 0) seedDataPermission();
+        if (userRepository.count() == 0) seedDataUser();
     }
 
     @Transactional
@@ -88,6 +89,4 @@ public class DataSeeding implements CommandLineRunner {
         );
         rpRepo.saveAll(rolePermissions);
     }
-
-
 }

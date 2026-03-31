@@ -2,6 +2,7 @@ package com.ord.core.crud.service;
 
 import com.ord.core.crud.dto.CommonResultDto;
 import com.ord.core.crud.enums.CommonResultCode;
+import com.ord.core.util.Translator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CommonResultFactory {
 
-    private final I18nService i18nService;
+    private final Translator translator;
 
     public <T> CommonResultDto<T> success(T data) {
         return CommonResultDto.<T>builder()
@@ -63,6 +64,6 @@ public class CommonResultFactory {
         if (messageKey == null) {
             return null;
         }
-        return i18nService.get(messageKey);
+        return translator.get(messageKey);
     }
 }

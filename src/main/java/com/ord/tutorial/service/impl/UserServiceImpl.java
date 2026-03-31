@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void ChangePassword(ChangePasswordDto dto) {
+    public void changePassword(ChangePasswordDto dto) {
         var user = getCurrentUser();
         if (!user.getPassword().equals(dto.getOldPassword())) {
             throw new OrdBusinessException("password.password");

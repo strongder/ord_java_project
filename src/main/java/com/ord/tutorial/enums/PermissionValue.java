@@ -3,7 +3,7 @@ package com.ord.tutorial.enums;
 import lombok.Getter;
 
 @Getter
-public enum PermissionValue//0
+public enum PermissionValue
 {
     PROVINCE_CREATE("province.create"),
     PROVINCE_GET_PAGED("province.get-paged"),
@@ -21,7 +21,6 @@ public enum PermissionValue//0
     ADMIN_USER_UPDATE("user.update"),
     ADMIN_USER_DELETE("user.delete"),
     USER_UPDATE_SELF("user.update-self"),
-
 //    role
     ROLE_CREATE("role.create"),
     ROLE_GET_PAGE("role.get-paged"),

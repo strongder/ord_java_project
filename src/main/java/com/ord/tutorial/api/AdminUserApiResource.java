@@ -125,5 +125,4 @@ public class AdminUserApiResource extends CrudAppService<
     protected String getEntityName() {
         return "user";
     }
-
 }

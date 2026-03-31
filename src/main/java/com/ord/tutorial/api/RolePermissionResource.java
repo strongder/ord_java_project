@@ -7,7 +7,6 @@ import com.ord.core.crud.repository.spec.SpecificationBuilder;
 import com.ord.core.crud.service.SimpleCrudAppService;
 import com.ord.tutorial.dto.role_per.AssignPermissionDto;
 import com.ord.tutorial.dto.role_per.RoleDto;
-import com.ord.tutorial.entity.ProvinceEntity;
 import com.ord.tutorial.entity.RoleEntity;
 import com.ord.tutorial.enums.PermissionValue;
 import com.ord.tutorial.repository.RoleRepository;
@@ -30,14 +29,14 @@ public class RolePermissionResource extends SimpleCrudAppService<RoleEntity, Int
     public CommonResultDto<?> assignPermissionsToRole(@RequestBody AssignPermissionDto dto) {
         hasPermission(PermissionValue.ASSIGN_PERMISSION_TO_ROLE.getValue());
         roleService.assignPermissionsToRole(dto);
-        return CommonResultDto.success("success.operation");
+        return commonResultFactory.success("success.operation");
     }
 
     @GetMapping("/get-permissions/{roleEnCodeId}")
     public CommonResultDto<List<String>> getRolePermissions(@PathVariable String roleEnCodeId) {
         var roleDto = getEntityDtoByEncodedId(roleEnCodeId);
         var permissions = roleService.getRolePermissions(roleDto.getId());
-        return CommonResultDto.success(permissions);
+        return commonResultFactory.success(permissions);
     }
 
     @Override
@@ -49,7 +48,7 @@ public class RolePermissionResource extends SimpleCrudAppService<RoleEntity, Int
     @GetMapping("/get-all")
     public CommonResultDto<List<RoleDto>> getAllRole() {
         var permissions = roleService.getAllRoles();
-        return CommonResultDto.success(permissions);
+        return commonResultFactory.success(permissions);
     }
     @Override
     protected OrdEntityRepository<RoleEntity, Integer> getRepository() {
@@ -74,7 +73,6 @@ public class RolePermissionResource extends SimpleCrudAppService<RoleEntity, Int
     protected String getRemovePolicy() {
         return PermissionValue.ROLE_DELETE.getValue();
     }
-
 
     @Override
     protected String getEntityName() {

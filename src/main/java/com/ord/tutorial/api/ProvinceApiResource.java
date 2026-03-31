@@ -52,7 +52,7 @@ public class ProvinceApiResource extends SimpleCrudAppService<
                 .toList();
         //encodeId cho từng item
         result.forEach(dto -> dto.setEncodedId(encodeId(dto.getId())));
-        return CommonResultDto.success(result);
+        return commonResultFactory.success(result);
     }
 
     @CacheEvict(value = "provinces_dropdown", allEntries = true)

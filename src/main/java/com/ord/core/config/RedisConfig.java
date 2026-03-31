@@ -1,6 +1,7 @@
 package com.ord.core.config;
 
 
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,5 +44,10 @@ public class RedisConfig {
         template.afterPropertiesSet();
         return template;
     }
+
+
+//    //thêm cache caffein
+//    @Bean
+//    public CacheManager ca
 }
 
