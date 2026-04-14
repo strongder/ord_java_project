@@ -9,6 +9,7 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 
@@ -21,7 +22,7 @@ public abstract class AuditTableEntity {
 
     @CreatedDate
     @Column(name = "created_date", updatable = false)
-    private LocalDateTime createdDate;
+    private Instant createdDate;
 
     @LastModifiedBy
     @Column(name = "last_modified_by")
@@ -29,6 +30,6 @@ public abstract class AuditTableEntity {
 
     @LastModifiedDate
     @Column(name = "last_modified_date")
-    private LocalDateTime lastModifiedDate;
+    private Instant lastModifiedDate;
 
 }

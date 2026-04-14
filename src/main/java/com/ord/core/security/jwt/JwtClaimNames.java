@@ -14,4 +14,5 @@ public final class JwtClaimNames {
     public static final String EMAIL = "email";
     public static final String PHONE = "phone";
     public static final String PERMISSION = "permission";
+    public static final String JTI = "jti";
 }

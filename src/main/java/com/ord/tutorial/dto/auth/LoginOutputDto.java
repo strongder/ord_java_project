@@ -10,4 +10,5 @@ import lombok.Setter;
 public class LoginOutputDto {
     private String token;
     private String type = "jwt";
+    private String refreshToken;
 }

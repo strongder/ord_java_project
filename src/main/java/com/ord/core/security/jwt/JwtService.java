@@ -11,10 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 @Service
@@ -68,6 +65,7 @@ public class JwtService {
     ) {
         return Jwts
                 .builder()
+                .setId(UUID.randomUUID().toString())
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -81,12 +79,21 @@ public class JwtService {
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
+    public boolean isTokenValid(String token, String username) {
+        final String extractUsername = extractUsername(token);
+        return extractUsername.equals(username) && !isTokenExpired(token);
+    }
+
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
-    private Date extractExpiration(String token) {
+    public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
+    }
+
+    public String extractJti(String token) {
+        return extractClaim(token, Claims::getId);
     }
 
     private Claims extractAllClaims(String token) {

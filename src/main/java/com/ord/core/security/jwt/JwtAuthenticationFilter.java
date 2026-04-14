@@ -4,7 +4,9 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,16 +23,12 @@ import java.util.List;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
-
-
-    public JwtAuthenticationFilter(JwtService jwtService, UserDetailsService userDetailsService) {
-        this.jwtService = jwtService;
-        this.userDetailsService = userDetailsService;
-    }
+    private final RedisTemplate<Object, Object> redisTemplate;
 
     @Override
     protected void doFilterInternal(
@@ -40,37 +38,35 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
 
         final String authHeader = request.getHeader("Authorization");
-        final String jwt;
-        final String username;
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
-        jwt = authHeader.substring(7);
-        username = jwtService.extractUsername(jwt);
-        List<String> permissions = jwtService.extractPermissions(jwt);
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+        try {
+            String jwt = authHeader.substring(7);
+            String username = jwtService.extractUsername(jwt);
+            String jti = jwtService.extractJti(jwt);
+            List<String> permissions = jwtService.extractPermissions(jwt);
 
-            if (jwtService.isTokenValid(jwt, userDetails)) {
-
-                List<SimpleGrantedAuthority> authorities =
-                        permissions.stream()
-                                .map(SimpleGrantedAuthority::new)
-                                .toList();
-                UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(
-                                userDetails,
-                                null,
-                                authorities
-                        );
-                authToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+            boolean isBacklist = redisTemplate.hasKey("blacklist: " + jti);
+            if (isBacklist) {
+                filterChain.doFilter(request, response);
+                return;
             }
+            // neu chua co authen thi set jwt filter sẽ set
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+                if (jwtService.isTokenValid(jwt, userDetails)) {
+                    List<SimpleGrantedAuthority> authorities = permissions.stream().map(SimpleGrantedAuthority::new).toList();
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
+            }
+            filterChain.doFilter(request, response);
+        } catch (Exception ex) {
+            logger.warn("JWT filter error: ", ex);
         }
-        filterChain.doFilter(request, response);
     }
 }
